@@ -1,5 +1,6 @@
 package br.edu.utfpr.usandodb_pm45s_2025_1
 
+import android.database.sqlite.SQLiteDatabase
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
@@ -11,6 +12,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var etNome: EditText
     private lateinit var etTelefone: EditText
 
+    private lateinit var banco : SQLiteDatabase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -18,6 +21,9 @@ class MainActivity : AppCompatActivity() {
         etCod = findViewById(R.id.etCod)
         etNome = findViewById(R.id.etNome)
         etTelefone = findViewById(R.id.etTelefone)
+
+        banco = openOrCreateDatabase("dbfile.sqlite", MODE_PRIVATE, null)
+        banco.execSQL("CREATE TABLE IF NOT EXISTS cadastro (_id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, telefone TEXT)")
 
     }
 
