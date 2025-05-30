@@ -8,6 +8,8 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.annotation.ContentView
 import androidx.appcompat.app.AppCompatActivity
+import br.edu.utfpr.usandodb_pm45s_2025_1.database.DatabaseHandler
+import br.edu.utfpr.usandodb_pm45s_2025_1.entity.Cadastro
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var etNome: EditText
     private lateinit var etTelefone: EditText
 
-    private lateinit var banco : SQLiteDatabase
+    private lateinit var banco : DatabaseHandler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,15 +27,17 @@ class MainActivity : AppCompatActivity() {
         etNome = findViewById(R.id.etNome)
         etTelefone = findViewById(R.id.etTelefone)
 
-        banco = openOrCreateDatabase( BD_NAME, MODE_PRIVATE, null)
-        banco.execSQL("CREATE TABLE IF NOT EXISTS ${TABLE_NAME} (_id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, telefone TEXT)")
+        banco = DatabaseHandler(this)
     }
 
     fun btIncluirOnClick(view: View) {
-        val registro = ContentValues()
-        registro.put("nome", etNome.text.toString())
-        registro.put("telefone", etTelefone.text.toString())
-        banco.insert(TABLE_NAME, null, registro)
+        val cadastro = Cadastro(
+            0,
+            etNome.text.toString(),
+            etTelefone.text.toString()
+        )
+
+        banco.insert( cadastro )
 
         Toast.makeText(
             this,
@@ -43,16 +47,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun btAlterarOnClick(view: View) {
-        val registro = ContentValues()
-        registro.put("nome", etNome.text.toString())
-        registro.put("telefone", etTelefone.text.toString())
-
-        banco.update(
-            TABLE_NAME,
-            registro,
-            "_id = ${etCod.text.toString()}",
-            null
+        val cadastro = Cadastro(
+            etCod.text.toString().toInt(),
+            etNome.text.toString(),
+            etTelefone.text.toString()
         )
+
+        banco.update(  cadastro )
 
         Toast.makeText(
             this,
@@ -63,11 +64,7 @@ class MainActivity : AppCompatActivity() {
     }
     fun btExcluirOnClick(view: View) {
 
-        banco.delete(
-            TABLE_NAME,
-            "_id = ${etCod.text.toString()}",
-            null
-        )
+        banco.delete( etCod.text.toString().toInt() )
 
         Toast.makeText(
             this,
@@ -77,23 +74,14 @@ class MainActivity : AppCompatActivity() {
 
     }
     fun btPesquisarOnClick(view: View) {
-        val registro = banco.query(
-            TABLE_NAME,
-            null,
-            "_id = ${etCod.text.toString()}",
-            null,
-            null,
-            null,
-            null
+
+        val registro = banco.pesquisar(
+            etCod.text.toString().toInt()
         )
 
-        if (registro.moveToNext()) {
-            val id = registro.getInt(COL_ID)
-            val nome = registro.getString(COL_NOME)
-            val telefone = registro.getString(COL_TELEFONE)
-
-            etNome.setText(nome)
-            etTelefone.setText(telefone)
+        if ( registro != null ) {
+            etNome.setText( registro.nome )
+            etTelefone.setText( registro.telefone )
         } else {
             Toast.makeText(
                 this,
@@ -102,22 +90,16 @@ class MainActivity : AppCompatActivity() {
             ).show()
         }
 
+
+
     }
     fun btListarOnClick(view: View) {
-        val registros = banco.query(
-            TABLE_NAME,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null
-        )
+        val registros = banco.listar()
 
         while (registros.moveToNext()) {
-            val id = registros.getInt(COL_ID)
-            val nome = registros.getString(COL_NOME)
-            val telefone = registros.getString(COL_TELEFONE)
+            val id = registros.getInt(0)
+            val nome = registros.getString(1)
+            val telefone = registros.getString(2)
 
             Toast.makeText(
                 this,
@@ -127,14 +109,6 @@ class MainActivity : AppCompatActivity() {
 
         }
 
-    }
-
-    companion object {
-        private const val BD_NAME = "dbfile.sqlite"
-        private const val TABLE_NAME = "cadastro"
-        private const val COL_ID = 0
-        private const val COL_NOME = 1
-        private const val COL_TELEFONE = 2
     }
 
 } //fim da MainActivity

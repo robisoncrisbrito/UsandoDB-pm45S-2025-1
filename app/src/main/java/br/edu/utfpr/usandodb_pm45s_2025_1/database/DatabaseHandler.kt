@@ -5,7 +5,6 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import br.edu.utfpr.usandodb_pm45s_2025_1.MainActivity
 import br.edu.utfpr.usandodb_pm45s_2025_1.entity.Cadastro
 
 class DatabaseHandler (context : Context ) : SQLiteOpenHelper (context, BD_NAME, null, BD_VERSION )  {
