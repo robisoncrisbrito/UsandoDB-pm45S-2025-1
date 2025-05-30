@@ -41,16 +41,91 @@ class MainActivity : AppCompatActivity() {
             Toast.LENGTH_SHORT
         ).show()
     }
+
     fun btAlterarOnClick(view: View) {
+        val registro = ContentValues()
+        registro.put("nome", etNome.text.toString())
+        registro.put("telefone", etTelefone.text.toString())
+
+        banco.update(
+            "cadastro",
+            registro,
+            "_id = ${etCod.text.toString()}",
+            null
+        )
+
+        Toast.makeText(
+            this,
+            "Alteração realizada com sucesso!",
+            Toast.LENGTH_SHORT
+        ).show()
 
     }
     fun btExcluirOnClick(view: View) {
 
+        banco.delete(
+            "cadastro",
+            "_id = ${etCod.text.toString()}",
+            null
+        )
+
+        Toast.makeText(
+            this,
+            "Exclusão realizada com sucesso!",
+            Toast.LENGTH_SHORT
+        ).show()
+
     }
     fun btPesquisarOnClick(view: View) {
+        val registro = banco.query(
+            "cadastro",
+            null,
+            "_id = ${etCod.text.toString()}",
+            null,
+            null,
+            null,
+            null
+        )
+
+        if (registro.moveToNext()) {
+            val id = registro.getInt(0)
+            val nome = registro.getString(1)
+            val telefone = registro.getString(2)
+
+            etNome.setText(nome)
+            etTelefone.setText(telefone)
+        } else {
+            Toast.makeText(
+                this,
+                "Registro não encontrado!",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
 
     }
     fun btListarOnClick(view: View) {
+        val registros = banco.query(
+            "cadastro",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        )
+
+        while (registros.moveToNext()) {
+            val id = registros.getInt(0)
+            val nome = registros.getString(1)
+            val telefone = registros.getString(2)
+
+            Toast.makeText(
+                this,
+                "$nome - $telefone",
+                Toast.LENGTH_SHORT
+            ).show()
+
+        }
 
     }
 }
