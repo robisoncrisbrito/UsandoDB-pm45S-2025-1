@@ -1,12 +1,10 @@
 package br.edu.utfpr.usandodb_pm45s_2025_1
 
-import android.content.ContentValues
-import android.database.sqlite.SQLiteDatabase
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
-import androidx.annotation.ContentView
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.utfpr.usandodb_pm45s_2025_1.database.DatabaseHandler
 import br.edu.utfpr.usandodb_pm45s_2025_1.entity.Cadastro
@@ -94,20 +92,27 @@ class MainActivity : AppCompatActivity() {
 
     }
     fun btListarOnClick(view: View) {
-        val registros = banco.listar()
 
-        while (registros.moveToNext()) {
-            val id = registros.getInt(0)
-            val nome = registros.getString(1)
-            val telefone = registros.getString(2)
+        val intent = Intent( this, ListarActivity::class.java )
+        startActivity( intent )
 
-            Toast.makeText(
-                this,
-                "$nome - $telefone",
-                Toast.LENGTH_SHORT
-            ).show()
 
-        }
+
+
+//        val registros = banco.listar()
+//
+//        while (registros.moveToNext()) {
+//            val id = registros.getInt(0)
+//            val nome = registros.getString(1)
+//            val telefone = registros.getString(2)
+//
+//            Toast.makeText(
+//                this,
+//                "$nome - $telefone",
+//                Toast.LENGTH_SHORT
+//            ).show()
+//
+//        }
 
     }
 
