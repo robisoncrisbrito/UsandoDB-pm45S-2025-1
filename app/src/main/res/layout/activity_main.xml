@@ -49,12 +49,14 @@
         android:text="Salvar" />
 
     <Button
+        android:id="@+id/btExcluir"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="btExcluirOnClick"
         android:text="Excluir" />
 
     <Button
+        android:id="@+id/btPesquisar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="btPesquisarOnClick"

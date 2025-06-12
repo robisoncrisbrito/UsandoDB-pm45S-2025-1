@@ -3,6 +3,7 @@ package br.edu.utfpr.usandodb_pm45s_2025_1
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,6 +15,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var etCod: EditText
     private lateinit var etNome: EditText
     private lateinit var etTelefone: EditText
+    private lateinit var btExcluir: Button
+    private lateinit var btPesquisar: Button
 
     private lateinit var banco : DatabaseHandler
 
@@ -24,11 +27,16 @@ class MainActivity : AppCompatActivity() {
         etCod = findViewById(R.id.etCod)
         etNome = findViewById(R.id.etNome)
         etTelefone = findViewById(R.id.etTelefone)
+        btExcluir = findViewById(R.id.btExcluir)
+        btPesquisar = findViewById(R.id.btPesquisar)
 
         if ( intent.getIntExtra( "id", 0 ) != 0 ) {
             etCod.setText(intent.getIntExtra("id", 0).toString())
             etNome.setText(intent.getStringExtra("nome"))
             etTelefone.setText(intent.getStringExtra("telefone"))
+        } else {
+            btExcluir.visibility = View.GONE
+            btPesquisar.visibility = View.GONE
         }
 
         banco = DatabaseHandler(this)
