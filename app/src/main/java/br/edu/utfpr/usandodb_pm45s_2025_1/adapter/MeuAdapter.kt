@@ -1,12 +1,15 @@
 package br.edu.utfpr.usandodb_pm45s_2025_1.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.database.Cursor
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageButton
 import android.widget.TextView
+import br.edu.utfpr.usandodb_pm45s_2025_1.MainActivity
 import br.edu.utfpr.usandodb_pm45s_2025_1.R
 import br.edu.utfpr.usandodb_pm45s_2025_1.entity.Cadastro
 
@@ -42,13 +45,22 @@ class MeuAdapter( val contexto : Context , val lista : Cursor ) : BaseAdapter() 
         //recuperar os componentes visuais
         val tvNome = v.findViewById<TextView>( R.id.tvNomeElementoLista )
         val tvTelefone = v.findViewById<TextView>( R.id.tvTelefoneElementoLista )
-        val btEditar = v.findViewById<TextView>( R.id.btEditarElementoLista )
+        val btEditar = v.findViewById<ImageButton>( R.id.btEditarElementoLista )
 
         lista.moveToPosition( id )
 
         //preencher os componentes visuais
         tvNome.text = lista.getString( 1 )
         tvTelefone.text = lista.getString( 2 )
+
+        btEditar.setOnClickListener {
+            lista.moveToPosition( id )
+            val intent = Intent( contexto, MainActivity::class.java )
+            intent.putExtra( "id", lista.getInt( 0 ) )
+            intent.putExtra( "nome", lista.getString( 1 ) )
+            intent.putExtra( "telefone", lista.getString( 2 ) )
+            contexto.startActivity( intent )
+        }
 
         return v
 
