@@ -25,6 +25,10 @@ class MainActivity : AppCompatActivity() {
         etNome = findViewById(R.id.etNome)
         etTelefone = findViewById(R.id.etTelefone)
 
+        etCod.setText( intent.getIntExtra( "id", 0 ).toString() )
+        etNome.setText( intent.getStringExtra( "nome" ) )
+        etTelefone.setText( intent.getStringExtra( "telefone" ) )
+
         banco = DatabaseHandler(this)
     }
 
@@ -59,6 +63,8 @@ class MainActivity : AppCompatActivity() {
             Toast.LENGTH_SHORT
         ).show()
 
+        finish()
+
     }
     fun btExcluirOnClick(view: View) {
 
@@ -69,6 +75,8 @@ class MainActivity : AppCompatActivity() {
             "Exclusão realizada com sucesso!",
             Toast.LENGTH_SHORT
         ).show()
+
+        finish()
 
     }
     fun btPesquisarOnClick(view: View) {
