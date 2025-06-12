@@ -25,41 +25,35 @@ class MainActivity : AppCompatActivity() {
         etNome = findViewById(R.id.etNome)
         etTelefone = findViewById(R.id.etTelefone)
 
-        etCod.setText( intent.getIntExtra( "id", 0 ).toString() )
-        etNome.setText( intent.getStringExtra( "nome" ) )
-        etTelefone.setText( intent.getStringExtra( "telefone" ) )
+        if ( intent.getIntExtra( "id", 0 ) != 0 ) {
+            etCod.setText(intent.getIntExtra("id", 0).toString())
+            etNome.setText(intent.getStringExtra("nome"))
+            etTelefone.setText(intent.getStringExtra("telefone"))
+        }
 
         banco = DatabaseHandler(this)
     }
 
-    fun btIncluirOnClick(view: View) {
-        val cadastro = Cadastro(
-            0,
-            etNome.text.toString(),
-            etTelefone.text.toString()
-        )
-
-        banco.insert( cadastro )
-
-        Toast.makeText(
-            this,
-            "Inclusão realizada com sucesso!",
-            Toast.LENGTH_SHORT
-        ).show()
-    }
-
     fun btAlterarOnClick(view: View) {
-        val cadastro = Cadastro(
-            etCod.text.toString().toInt(),
-            etNome.text.toString(),
-            etTelefone.text.toString()
-        )
-
-        banco.update(  cadastro )
+        if (etCod.text.toString().isEmpty()) {
+            val cadastro = Cadastro(
+                0,
+                etNome.text.toString(),
+                etTelefone.text.toString()
+            )
+            banco.insert( cadastro )
+        } else {
+            val cadastro = Cadastro(
+                etCod.text.toString().toInt(),
+                etNome.text.toString(),
+                etTelefone.text.toString()
+            )
+            banco.update(  cadastro )
+        }
 
         Toast.makeText(
             this,
-            "Alteração realizada com sucesso!",
+            "Registro salvo com sucesso!",
             Toast.LENGTH_SHORT
         ).show()
 
@@ -95,33 +89,6 @@ class MainActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         }
-
-
-
-    }
-    fun btListarOnClick(view: View) {
-
-        val intent = Intent( this, ListarActivity::class.java )
-        startActivity( intent )
-
-
-
-
-//        val registros = banco.listar()
-//
-//        while (registros.moveToNext()) {
-//            val id = registros.getInt(0)
-//            val nome = registros.getString(1)
-//            val telefone = registros.getString(2)
-//
-//            Toast.makeText(
-//                this,
-//                "$nome - $telefone",
-//                Toast.LENGTH_SHORT
-//            ).show()
-//
-//        }
-
     }
 
 } //fim da MainActivity

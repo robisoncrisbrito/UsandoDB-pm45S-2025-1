@@ -1,6 +1,8 @@
 package br.edu.utfpr.usandodb_pm45s_2025_1
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.SimpleCursorAdapter
@@ -30,5 +32,11 @@ class ListarActivity : AppCompatActivity() {
 
         lvRegistros.adapter = adapter
 
+    }
+
+    fun btIncluirOnClick(view: View) {
+        val intent = Intent( this, MainActivity::class.java )
+
+        startActivity(intent)
     }
 }
