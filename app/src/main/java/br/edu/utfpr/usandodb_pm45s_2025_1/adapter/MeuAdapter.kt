@@ -42,6 +42,7 @@ class MeuAdapter( val contexto : Context , val lista : Cursor ) : BaseAdapter() 
         //recuperar os componentes visuais
         val tvNome = v.findViewById<TextView>( R.id.tvNomeElementoLista )
         val tvTelefone = v.findViewById<TextView>( R.id.tvTelefoneElementoLista )
+        val btEditar = v.findViewById<TextView>( R.id.btEditarElementoLista )
 
         lista.moveToPosition( id )
 
