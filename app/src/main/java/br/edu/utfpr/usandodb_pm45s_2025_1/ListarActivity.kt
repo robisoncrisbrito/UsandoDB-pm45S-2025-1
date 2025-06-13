@@ -26,12 +26,13 @@ class ListarActivity : AppCompatActivity() {
         lvRegistros = findViewById(R.id.lvRegistros)
         banco = DatabaseHandler(this)
 
+    }
+
+    override fun onStart() {
+        super.onStart()
         val registros = banco.listar()
-
         val adapter = MeuAdapter( this, registros )
-
         lvRegistros.adapter = adapter
-
     }
 
     fun btIncluirOnClick(view: View) {
