@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import br.edu.utfpr.usandodb_pm45s_2025_1.database.DatabaseHandler
 import br.edu.utfpr.usandodb_pm45s_2025_1.entity.Cadastro
@@ -83,20 +84,36 @@ class MainActivity : AppCompatActivity() {
     }
     fun btPesquisarOnClick(view: View) {
 
-        val registro = banco.pesquisar(
-            etCod.text.toString().toInt()
+        val etCodPesquisa = EditText(this)
+
+        val builder = AlertDialog.Builder(this)
+
+        builder.setTitle("Código" )
+        builder.setView( etCodPesquisa )
+        builder.setCancelable( false )
+        builder.setNegativeButton( "Fechar", null )
+        builder.setPositiveButton ( "Pesquisar",
+            { dialogInterface, i ->
+
+                val registro = banco.pesquisar(
+                    etCodPesquisa.text.toString().toInt()
+                )
+
+                if ( registro != null ) {
+                    etCod.setText( etCodPesquisa.text.toString() )
+                    etNome.setText( registro.nome )
+                    etTelefone.setText( registro.telefone )
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Registro não encontrado!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         )
 
-        if ( registro != null ) {
-            etNome.setText( registro.nome )
-            etTelefone.setText( registro.telefone )
-        } else {
-            Toast.makeText(
-                this,
-                "Registro não encontrado!",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
+        builder.show()
     }
 
 } //fim da MainActivity
